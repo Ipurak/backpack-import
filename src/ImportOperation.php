@@ -123,7 +123,7 @@ trait ImportOperation
 
         $columns = [];
         foreach ($importFields as $idx_1 => $importField) {
-            $columns[] = $importField['label'];
+            $columns[] = $importField['name'];
         }
 
         $callback = function () use ($columns) {
