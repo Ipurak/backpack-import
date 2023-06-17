@@ -1,13 +1,9 @@
 {
-    "name": "ckhandla94/backpack-import",
+    "name": "ipurak/backpack-import",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "authors": [{
-        "name": "Chetan Khandla",
-        "email": "ckhandla94@gmail.com"
-    }],
     "require": {
         "atk14/csv-reader": "^1.1"
     },
