@@ -114,7 +114,7 @@ trait ImportOperation
         $importFields = $this->getImportableFields();
 
         $headers = array(
-            "Content-type" => "text/csv",
+            "Content-Type" => "text/csv; charset=UTF-8",
             "Content-Disposition" => "attachment; filename=" . $this->importSampleFilename(),
             "Pragma" => "no-cache",
             "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
@@ -122,16 +122,26 @@ trait ImportOperation
         );
 
         $columns = [];
-        foreach ($importFields as $idx_1 => $importField) {
+        foreach ($importFields as $importField) {
             $columns[] = $importField['name'];
         }
 
         $callback = function () use ($columns) {
             $file = fopen('php://output', 'w');
+
+            // Add BOM for UTF-8
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            // Ensure column names are UTF-8 encoded
+            $columns = array_map(function($column) {
+                return mb_convert_encoding($column, 'UTF-8', 'auto');
+            }, $columns);
+
             fputcsv($file, $columns);
 
             fclose($file);
         };
+
         return response()->stream($callback, 200, $headers);
     }
 
